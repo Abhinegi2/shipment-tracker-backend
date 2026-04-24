@@ -11,6 +11,9 @@ const settingsSchema = new mongoose.Schema(
     primaryColor: { type: String, default: "#2563EB" },
     sidebarColor: { type: String, default: "#0F172A" },
     accentColor: { type: String, default: "#1E3A5F" },
+    loginHeadline: { type: String, default: "Track Every Shipment\nReal-Time, Always" },
+    loginSubtitle: { type: String, default: "Monitor equipment shipments across all locations with real-time status updates and full timeline tracking." },
+    loginTags: { type: [String], default: ["Real-time Updates", "Timeline View", "Multi-location"] },
   },
   { timestamps: true }
 );
