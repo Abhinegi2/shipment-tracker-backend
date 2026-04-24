@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema(
     avatar: { type: String, default: "" },
     role: { type: String, default: "location_user" },
     location: { type: String, default: "" },
-    status: { type: String, enum: ["active", "inactive"], default: "active" },
+    status: { type: String, enum: ["active", "inactive", "pending"], default: "active" },
+    authProvider: { type: String, enum: ["email", "google"], default: "email" },
   },
   { timestamps: true }
 );

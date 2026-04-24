@@ -36,14 +36,18 @@ router.post("/google", async (req, res) => {
 
     let user = await User.findOne({ $or: [{ googleId }, { email }] });
     if (!user) {
-      user = await User.create({ name, email, googleId, avatar: picture, role: "location_user" });
+      user = await User.create({ name, email, googleId, avatar: picture, role: "location_user", status: "pending", authProvider: "google" });
+      return res.status(403).json({ message: "pending_approval", pending: true });
     } else if (!user.googleId) {
       user.googleId = googleId;
       user.avatar = picture;
+      user.authProvider = "google";
       await user.save();
     }
+    if (user.status === "pending")
+      return res.status(403).json({ message: "pending_approval", pending: true });
     if (user.status === "inactive")
-      return res.status(403).json({ message: "Account is inactive" });
+      return res.status(403).json({ message: "Account is inactive. Contact your administrator." });
 
     res.json({ token: signToken(user._id), user: userPayload(user) });
   } catch (err) {
