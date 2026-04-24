@@ -5,7 +5,9 @@ const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true },
+    password: { type: String, default: "" },
+    googleId: { type: String, default: "" },
+    avatar: { type: String, default: "" },
     role: { type: String, enum: ["admin", "location_user"], default: "location_user" },
     location: { type: String, default: "" },
     status: { type: String, enum: ["active", "inactive"], default: "active" },
@@ -14,7 +16,7 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") || !this.password) return next();
   this.password = await bcrypt.hash(this.password, 10);
   next();
 });

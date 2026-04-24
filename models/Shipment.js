@@ -15,9 +15,16 @@ const shipmentSchema = new mongoose.Schema(
   {
     trackingId: { type: String, unique: true },
     equipment: { type: String, required: true },
+    itemDescription: { type: String, default: "" },
+    category: { type: String, default: "General" },
+    weight: { type: Number, default: null },
     quantity: { type: Number, required: true },
     fromLocation: { type: String, required: true },
+    fromState: { type: String, default: "" },
+    fromDistrict: { type: String, default: "" },
     toLocation: { type: String, required: true },
+    toState: { type: String, default: "" },
+    toDistrict: { type: String, default: "" },
     status: {
       type: String,
       enum: ["Created", "Dispatched", "In Transit", "Reached", "Out for Delivery", "Delivered"],
@@ -30,7 +37,6 @@ const shipmentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-generate tracking ID
 shipmentSchema.pre("save", async function (next) {
   if (!this.trackingId) {
     const count = await mongoose.model("Shipment").countDocuments();
