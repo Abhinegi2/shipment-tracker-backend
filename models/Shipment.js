@@ -30,12 +30,24 @@ const shipmentSchema = new mongoose.Schema(
       enum: ["Created", "Dispatched", "In Transit", "Reached", "Out for Delivery", "Delivered"],
       default: "Created",
     },
+    senderName: { type: String, default: "" },
+    senderPhone: { type: String, default: "" },
+    recipientName: { type: String, default: "" },
+    recipientPhone: { type: String, default: "" },
+    estimatedDelivery: { type: Date, default: null },
     timeline: [timelineSchema],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     createdByName: { type: String },
   },
   { timestamps: true }
 );
+
+// Indexes for fast querying
+shipmentSchema.index({ trackingId: 1 });
+shipmentSchema.index({ status: 1 });
+shipmentSchema.index({ createdAt: -1 });
+shipmentSchema.index({ fromState: 1, toState: 1 });
+shipmentSchema.index({ equipment: "text", trackingId: "text" });
 
 shipmentSchema.pre("save", async function (next) {
   if (!this.trackingId) {
