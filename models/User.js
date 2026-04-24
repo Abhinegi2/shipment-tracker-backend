@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, default: "" },
     googleId: { type: String, default: "" },
     avatar: { type: String, default: "" },
-    role: { type: String, enum: ["admin", "location_user"], default: "location_user" },
+    role: { type: String, default: "location_user" },
     location: { type: String, default: "" },
     status: { type: String, enum: ["active", "inactive"], default: "active" },
   },
